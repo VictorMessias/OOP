@@ -47,8 +47,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -2413,10 +2419,8 @@ public class Main extends javax.swing.JFrame {
 
 
             try{
-                File homedir = new File(System.getProperty("user.home"));
-
-                File fileToRead = new File(homedir, "/NetBeansProjects/NBA News/src/sources/players.txt");
-                BufferedReader br = new BufferedReader(new FileReader(fileToRead));
+                InputStream inputStream = getClass().getResourceAsStream( File.separator + "sources"+ File.separator + "players.txt");
+                BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
                 String line = br.readLine();
                 
                 LinkedList<String> players = new LinkedList();
@@ -2865,11 +2869,8 @@ public class Main extends javax.swing.JFrame {
         
         
         try{
-            File homedir = new File(System.getProperty("user.home"));
-            
-            URL resource = getClass().getResource("/sources/"+ side +"/"+ teamName +".txt");
-            File fileToRead = new File(resource.toURI());
-            BufferedReader br = new BufferedReader(new FileReader(fileToRead));
+            InputStream inputStream = getClass().getResourceAsStream( File.separator + "sources" + File.separator + side + File.separator + teamName + ".txt");
+            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
             String line = br.readLine();
 
             nameTeam.setText(line);
@@ -2966,8 +2967,6 @@ public class Main extends javax.swing.JFrame {
             System.out.println(e);
         }catch(IOException e){
             System.out.println(e);
-        }catch(URISyntaxException e){
-            System.out.println(e);
         }
     }
     
@@ -2978,12 +2977,13 @@ public class Main extends javax.swing.JFrame {
         DefaultTableModel tableStatistics = (DefaultTableModel) jTable1.getModel();
         tableStatistics.setColumnCount(this.lines.get(type) + 1);
         tableStatistics.setNumRows(0);
-        tableStatistics.setColumnIdentifiers(this.columns.get(type));
-
+        tableStatistics.setColumnIdentifiers(this.columns.get(type)); 
+        
+        
+        
         try{
-            URL resource = getClass().getResource("/sources/"+ year +"/"+ type +".txt");
-            File fileToRead = new File(resource.toURI());
-            BufferedReader br = new BufferedReader(new FileReader(fileToRead));
+            InputStream inputStream = getClass().getResourceAsStream( File.separator + "sources"+ File.separator + year + File.separator + type +".txt");
+            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
             String line = br.readLine();
             int count = 0;
             int rk = 1;
@@ -3014,8 +3014,6 @@ public class Main extends javax.swing.JFrame {
         }catch(FileNotFoundException e){
             System.out.println(e);
         }catch(IOException e){
-            System.out.println(e);
-        }catch(URISyntaxException e){
             System.out.println(e);
         }
     }
